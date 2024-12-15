@@ -1,8 +1,9 @@
 <script lang="ts">
-	import Input from '@/components/ui/Input.svelte';
-	import Select from '@/components/ui/Select.svelte';
 	import { PERSON_TYPE_CODES } from '@/lib/consts';
 	import { individualExample as ex } from '@/lib/mock';
+
+	import Input from '@/components/ui/Input.svelte';
+	import Select from '@/components/ui/Select.svelte';
 </script>
 
 <section class="flex w-full max-w-3xl flex-col items-center gap-8 p-8 pt-48">
@@ -16,7 +17,7 @@
 			bind:value={ex.Parties.SellerParty.TaxIdentification.PersonTypeCode}
 			options={PERSON_TYPE_CODES}
 		/>
-		
+
 		<Input
 			label="Número de identificación fiscal"
 			type="text"
