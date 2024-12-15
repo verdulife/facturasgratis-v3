@@ -1,75 +1,146 @@
-import { type Facturae, InvoiceDocumentType, OperationType } from '@/types/facturae';
+import { type Facturae, Modality, InvoiceIssuerType, PersonTypeCode, ResidenceTypeCode, InvoiceDocumentType, InvoiceClass, TaxTypeCode, PaymentMeans } from "@/types/facturae";
+import { IRPF, IVA } from "@/types/enums";
 
-export const facturaeExample: Facturae = {
-  FacturaeVersion: "3.2.2",
+export const individualExample: Facturae = {
+  FileHeader: {
+    SchemaVersion: "3.2.2",
+    Modality: Modality.Individual,
+    InvoiceIssuerType: InvoiceIssuerType.Seller,
+    Batch: {
+      BatchIdentifier: "A99887723392009-1",
+      InvoicesCount: 1,
+      TotalInvoicesAmount: {
+        TotalAmount: 468.10,
+      },
+      TotalOutstandingAmount: {
+        TotalAmount: 468.10,
+      },
+      TotalExecutableAmount: {
+        TotalAmount: 489.74,
+      },
+      InvoiceCurrencyCode: "EUR",
+    }
+  },
   Parties: {
     SellerParty: {
-      TaxIdentification: "46356977V",
-      LegalEntity: {
-        CorporateName: "VERDU S.L.",
+      TaxIdentification: {
+        PersonTypeCode: PersonTypeCode.Individual,
+        ResidenceTypeCode: ResidenceTypeCode.Resident,
+        TaxIdentificationNumber: "A82735122",
       },
       Individual: {
-        Name: "Albert",
-        FirstSurname: "Verdú",
-        SecondSurname: "Llinares",
-      },
+        Name: "Juana",
+        FirstSurname: "Mauriño",
+        AddressInSpain: {
+          Address: "Juncal 1315",
+          PostCode: "00000",
+          Town: "Argamasilla de Alba",
+          Province: "Ciudad Real",
+          CountryCode: "ESP",
+        },
+        ContactDetails: {
+          Telephone: "00547775554",
+          ElectronicMail: "facturae@mityc.es",
+        }
+      }
     },
     BuyerParty: {
-      TaxIdentification: "46356977V",
-      LegalEntity: {
-        CorporateName: "VERDU S.L.",
+      TaxIdentification: {
+        PersonTypeCode: PersonTypeCode.Individual,
+        ResidenceTypeCode: ResidenceTypeCode.NonResident,
+        TaxIdentificationNumber: "0000000000B",
       },
       Individual: {
-        Name: "Albert",
-        FirstSurname: "Verdú",
-        SecondSurname: "Llinares",
-      },
+        Name: "Juana",
+        FirstSurname: "Mauriño",
+        AddressInSpain: {
+          Address: "Juncal 1315",
+          PostCode: "00000",
+          Town: "Argamasilla de Alba",
+          Province: "Ciudad Real",
+          CountryCode: "ESP",
+        },
+        ContactDetails: {
+          Telephone: "00547775554",
+          ElectronicMail: "facturae@mityc.es",
+        }
+      }
     },
   },
-  InvoiceHeader: {
-    InvoiceNumber: "0001",
-    InvoiceSeriesCode: "25",
-    InvoiceDocumentType: InvoiceDocumentType.Invoice,
-    OperationType: OperationType.Normal,
-  },
-  InvoiceIssueData: {
-    IssueDate: "2024-01-20",
-  },
-  TaxesOutputs: [
+  Invoices: [
     {
-      TaxRate: 21,
-      TaxableBase: 20,
-      TaxAmount: 4.20,
-    }
+      InvoiceHeader: {
+        InvoiceNumber: "0001",
+        InvoiceSeriesCode: "2025",
+        InvoiceDocumentType: InvoiceDocumentType.CompleteInvoice,
+        InvoiceClass: InvoiceClass.Original,
+      },
+      InvoiceIssueData: {
+        IssueDate: "2025-01-20",
+        OperationDate: "2025-01-20",
+        PlaceOfIssue: {
+          PostCode: "00000",
+          PlaceOfIssueDescription: "Argamasilla de Alba",
+        },
+        InvoiceCurrencyCode: "EUR",
+        TaxCurrencyCode: "EUR",
+        LanguageName: "es",
+      },
+      TaxesOutputs: [
+        {
+          TaxTypeCode: TaxTypeCode.IVA,
+          TaxRate: IVA.General,
+          TaxableBase: 468.10,
+          TaxAmount: 468.10
+        },
+        {
+          TaxTypeCode: TaxTypeCode.IRPF,
+          TaxRate: IRPF.Fiveteen,
+          TaxableBase: 468.10,
+          TaxAmount: 468.10
+        },
+      ],
+      InvoiceTotals: {
+        TotalGrossAmount: 468.10,
+        TotalGeneralDiscounts: 0,
+        TotalGrossAmountBeforeTaxes: 468.10,
+        TotalTaxOutputs: 468.10,
+        TotalTaxesWithheld: 0,
+        InvoiceTotal: 468.10,
+        TotalOutstandingAmount: 468.10,
+        TotalExecutableAmount: 489.74
+      },
+      Items: [
+        {
+          SequenceNumber: "1",
+          ItemDescription: "Producto 1",
+          Quantity: 1,
+          UnitOfMeasure: "Unidades",
+          UnitPriceWithoutTax: 468.10,
+          TotalCost: 468.10,
+          GrossAmount: 468.10,
+          DiscountsAndRebates: [
+            {
+              DiscountReason: "Descuento general",
+              DiscountRate: 10,
+              DiscountAmount: 468.10,
+            },
+          ]
+        }
+      ],
+      PaymentDetails: [
+        {
+          InstallmentDueDate: "2025-01-20",
+          InstallmentAmount: 468.10,
+          PaymentMeans: PaymentMeans.CreditTransfer,
+          AccountToBeCredited: {
+            IBAN: "ES01 0000 0000 0000 0000 00 01",
+            BankCode: "123",
+            BranchCode: "123456789"
+          }
+        }
+      ]
+    },
   ],
-  InvoiceTotals: {
-    TotalGrossAmount: 20,
-    TotalInvoiceAmount: 21.20,
-  },
-  Items: [
-    {
-      Description: "Masaje sexy",
-      UnitPriceWithoutTax: 20,
-      Quantity: 1,
-      TotalCost: 20,
-    }
-  ],
-  PaymentDetails: [
-    {
-      PaymentDueDate: "2024-02-20",
-      PaymentMeans: "Transferencia bancaria",
-      AccountNumber: "ES12-34567890-12-34",
-    }
-  ],
-  AdministrativeCentres: [
-    {
-      CentreCode: "UP2000",
-      CentreName: "Unidad de Producción 2000",
-    }
-  ],
-  LegalLiterals: [
-    "N-P"
-  ],
-  AdditionalData: "Fecha de pago ampliable hasta el 2024-03-20",
-  ElectronicSignature: "UTPSZoyMnEi0jKM1K13q9lWSuGNOyMiM6xAl8XR1SE9KNmf3/HSSlUniuLormjoiInWqhVbHLOI+wEz4C+QC/g=="
-}
+};
+
