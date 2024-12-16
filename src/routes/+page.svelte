@@ -7,15 +7,31 @@
 	import Select from '@/components/ui/Select.svelte';
 	import Fieldset from '@/components/ui/Fieldset.svelte';
 	import Row from '@/components/ui/Row.svelte';
+	import Button from '@/components/Button.svelte';
+	import { SellersStore, currentSellerStore } from '@/lib/stores';
 
 	const seller = $state(SellerDefault);
+
+	function handleSubmit(ev: Event) {
+		ev.preventDefault();
+
+		function removeNull<T>(obj: T | any) {
+			Object.keys(obj).forEach((key) => {
+				if (obj[key] && typeof obj[key] === 'object') removeNull(obj[key]);
+				else if (obj[key] == null) delete obj[key];
+			});
+			return obj;
+		}
+
+		$SellersStore[$currentSellerStore] = removeNull(seller);
+	}
 </script>
 
 <section class="flex w-full max-w-3xl flex-col items-center gap-8 p-8 pt-48">
 	<h1 class="text-4xl font-medium">Facturasgratis v3</h1>
 	<p>⚠️ Trabajo en progreso</p>
 
-	<form class="flex w-full flex-col gap-4">
+	<form class="flex w-full flex-col gap-4" onsubmit={handleSubmit}>
 		<Fieldset legend="Datos del emisor">
 			<Row>
 				<Select
@@ -42,6 +58,7 @@
 					placeholder="Ej. Juana"
 					bind:value={seller.Individual.Name}
 				/>
+
 				<Row>
 					<Input
 						label="Primer apellido"
@@ -61,83 +78,100 @@
 					/>
 				</Row>
 			</Fieldset>
-
-			<Fieldset legend="Dirección fiscal">
-				<Row>
-					<Input
-						label="Dirección"
-						type="text"
-						placeholder="Ej. Calle Mayor, 16"
-						bind:value={seller.Individual.AddressInSpain.Address}
-						className="grow"
-					/>
-					<Input
-						label="CP"
-						type="text"
-						placeholder="Ej. 08818"
-						size={CP_LENGHT}
-						bind:value={seller.Individual.AddressInSpain.PostCode}
-					/>
-				</Row>
-
-				<Row>
-					<Input
-						label="Ciudad"
-						type="text"
-						placeholder="Ej. Olivella"
-						bind:value={seller.Individual.AddressInSpain.Town}
-						className="grow"
-					/>
-					<Input
-						label="Provincia"
-						type="text"
-						placeholder="Ej. Barcelona"
-						bind:value={seller.Individual.AddressInSpain.Province}
-						className="grow"
-					/>
-				</Row>
-			</Fieldset>
-
-			<Fieldset legend="Datos de contacto">
-				<Row>
-					<Input
-						label="Teléfono"
-						type="tel"
-						placeholder="Ej. 600 600 600"
-						bind:value={seller.Individual.ContactDetails.Telephone}
-						className="grow"
-					/>
-					<Input
-						label="Correo electrónico"
-						type="email"
-						placeholder="Ej. contabilidad@gmail.com"
-						bind:value={seller.Individual.ContactDetails.ElectronicMail}
-						className="grow"
-					/>
-				</Row>
-				<Row>
-					<Input
-						label="Página web"
-						type="text"
-						placeholder="Ej. www.ejemplo.com"
-						optional
-						bind:value={seller.Individual.ContactDetails.Telephone}
-						className="grow"
-					/>
-					<Input
-						label="Persona de contacto"
-						type="text"
-						placeholder="Ej. Juana"
-						optional
-						bind:value={seller.Individual.ContactDetails.ElectronicMail}
-						className="grow"
-					/>
-				</Row>
-			</Fieldset>
 		{:else}
 			<Fieldset legend="Datos jurídicos">
-				<p>⚠️ No implementado</p>
+				<Input
+					label="Razón social"
+					type="text"
+					placeholder="Ej. Empresa S.L."
+					bind:value={seller.LegalEntity.CorporateName}
+				/>
+				<Input
+					label="Nombre comercial"
+					type="text"
+					placeholder="Ej. Empresa"
+					optional
+					bind:value={seller.LegalEntity.TradeName}
+				/>
 			</Fieldset>
 		{/if}
+
+		<Fieldset legend="Dirección fiscal">
+			<Row>
+				<Input
+					label="Dirección"
+					type="text"
+					placeholder="Ej. Calle Mayor, 16"
+					bind:value={seller.AddressInSpain.Address}
+					className="grow"
+				/>
+				<Input
+					label="CP"
+					type="text"
+					placeholder="Ej. 08818"
+					size={CP_LENGHT}
+					bind:value={seller.AddressInSpain.PostCode}
+				/>
+			</Row>
+
+			<Row>
+				<Input
+					label="Ciudad"
+					type="text"
+					placeholder="Ej. Olivella"
+					bind:value={seller.AddressInSpain.Town}
+					className="grow"
+				/>
+				<Input
+					label="Provincia"
+					type="text"
+					placeholder="Ej. Barcelona"
+					bind:value={seller.AddressInSpain.Province}
+					className="grow"
+				/>
+			</Row>
+		</Fieldset>
+
+		<Fieldset legend="Datos de contacto">
+			<Row>
+				<Input
+					label="Teléfono"
+					type="tel"
+					placeholder="Ej. 600 600 600"
+					bind:value={seller.ContactDetails.Telephone}
+					className="grow"
+				/>
+				<Input
+					label="Correo electrónico"
+					type="email"
+					placeholder="Ej. contabilidad@gmail.com"
+					bind:value={seller.ContactDetails.ElectronicMail}
+					className="grow"
+				/>
+			</Row>
+
+			<Row>
+				<Input
+					label="Página web"
+					type="text"
+					placeholder="Ej. www.ejemplo.com"
+					optional
+					bind:value={seller.ContactDetails.WebAddress}
+					className="grow"
+				/>
+				<Input
+					label="Contacto"
+					type="text"
+					placeholder="Ej. Juana"
+					optional
+					bind:value={seller.ContactDetails.ContactPersons}
+					className="grow"
+				/>
+			</Row>
+		</Fieldset>
+
+		<div class="mt-8 flex w-full justify-center">
+			<Button type="submit">Crear emisor</Button>
+		</div>
 	</form>
 </section>
