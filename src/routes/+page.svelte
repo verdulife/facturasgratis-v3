@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { PERSON_TYPE_CODES } from '@/lib/consts';
 	import { individualExample as mock } from '@/lib/mock';
+	import { PersonTypeCode } from '@/types/facturae';
+	import { SellersStore } from '@/lib/stores';
+
+	$effect(() => console.log($SellersStore));
 
 	import Input from '@/components/ui/Input.svelte';
 	import Select from '@/components/ui/Select.svelte';
@@ -30,7 +34,7 @@
 			</Row>
 		</Fieldset>
 
-		{#if mock.Parties.SellerParty.Individual}
+		{#if mock.Parties.SellerParty.TaxIdentification.PersonTypeCode === PersonTypeCode.Individual}
 			<Fieldset legend="Datos personales">
 				<Input label="Nombre" type="text" bind:value={mock.Parties.SellerParty.Individual.Name} />
 				<Row>
@@ -97,7 +101,7 @@
 					/>
 				</Row>
 			</Fieldset>
-		{:else if mock.Parties.SellerParty.LegalEntity}
+		{:else}
 			<Fieldset legend="Datos jurídicos">
 				<p>⚠️ No implementado</p>
 			</Fieldset>

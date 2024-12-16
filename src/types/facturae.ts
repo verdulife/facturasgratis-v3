@@ -71,7 +71,7 @@ interface PartyAsLegalEntity extends PartyBase {
   Individual?: never;
 }
 
-type Party = PartyAsIndividual | PartyAsLegalEntity;
+export type Party = PartyAsIndividual | PartyAsLegalEntity;
 
 export enum PersonTypeCode {
   Individual = "F", // Persona física (autonomo).
