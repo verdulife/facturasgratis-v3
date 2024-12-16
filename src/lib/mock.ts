@@ -9,15 +9,9 @@ export const individualExample: Facturae = {
     Batch: {
       BatchIdentifier: "A99887723392009-1",
       InvoicesCount: 1,
-      TotalInvoicesAmount: {
-        TotalAmount: 468.10,
-      },
-      TotalOutstandingAmount: {
-        TotalAmount: 468.10,
-      },
-      TotalExecutableAmount: {
-        TotalAmount: 489.74,
-      },
+      TotalInvoicesAmount: 468.10,
+      TotalOutstandingAmount: 468.10,
+      TotalExecutableAmount: 468.10,
       InvoiceCurrencyCode: "EUR",
     }
   },

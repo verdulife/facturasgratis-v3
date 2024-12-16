@@ -84,7 +84,7 @@ export enum ResidenceTypeCode {
   EurepeResident = "U" // Residente en la Unión Europea.
 }
 
-interface LegalEntity {
+export interface LegalEntity {
   CorporateName: string;
   TradeName?: string;
   RegistrationData?: RegistrationData;
@@ -93,7 +93,7 @@ interface LegalEntity {
   ContactDetails?: ContactDetails;
 }
 
-interface Individual {
+export interface Individual {
   Name: string;
   FirstSurname?: string;
   SecondSurname?: string;

@@ -1,10 +1,10 @@
 <script>
-	let { label, value = $bindable(), options } = $props();
+	let { label, value = $bindable(null), options } = $props();
 </script>
 
-<label class="flex flex-col items-start group grow">
+<label class="group flex grow flex-col items-start">
 	<span
-		class="ml-2 rounded-tl rounded-tr bg-neutral-800 px-2 py-1 font-mono text-xs shadow text-neutral-400 group-focus-within:bg-yellow-300 group-focus-within:text-neutral-900"
+		class="ml-2 rounded-tl rounded-tr bg-neutral-800 px-2 py-1 font-mono text-xs text-neutral-400 shadow group-focus-within:bg-yellow-300 group-focus-within:text-neutral-900"
 	>
 		{label}
 	</span>
