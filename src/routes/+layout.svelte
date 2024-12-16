@@ -1,5 +1,8 @@
 <script lang="ts">
 	import '@/app.css';
+	import '@fontsource-variable/inter';
+	import '@fontsource-variable/martian-mono';
+
 	import { metadata } from '@/lib/metadata';
 
 	let { children } = $props();
@@ -11,15 +14,13 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<main class="flex min-h-dvh flex-col items-center overflow-hidden">
+<main
+	class="flex min-h-dvh flex-col items-center overflow-hidden bg-neutral-200 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-200"
+>
 	{@render children()}
 </main>
 
 <style lang="postcss">
-	:global(:root) {
-		@apply scroll-smooth;
-	}
-
 	:global(p) {
 		@apply text-pretty;
 	}

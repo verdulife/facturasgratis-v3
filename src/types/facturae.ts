@@ -36,22 +36,42 @@ export enum InvoiceIssuerType {
 interface Batch {
   BatchIdentifier: string; // Identificador único del lote.
   InvoicesCount: number; // Número total de facturas en el lote.
-  TotalInvoicesAmount: Amount; // Importe total de las facturas.
-  TotalOutstandingAmount: Amount; // Importe total pendiente.
-  TotalExecutableAmount: Amount; // Importe total ejecutable.
+  TotalInvoicesAmount: number; // Importe total de las facturas.
+  TotalOutstandingAmount: number; // Importe total pendiente.
+  TotalExecutableAmount: number; // Importe total ejecutable.
   InvoiceCurrencyCode: string; // Código de la divisa (e.g., EUR).
 }
 
-interface Party {
+interface PartyBase {
   TaxIdentification: {
     PersonTypeCode: PersonTypeCode;
     ResidenceTypeCode: ResidenceTypeCode;
     TaxIdentificationNumber: string;
   };
-  LegalEntity?: LegalEntity;
-  Individual?: Individual;
   AdministrativeCentres?: AdministrativeCentre[];
 }
+
+interface PartyAsIndividual extends PartyBase {
+  TaxIdentification: {
+    PersonTypeCode: PersonTypeCode.Individual;
+    ResidenceTypeCode: ResidenceTypeCode;
+    TaxIdentificationNumber: string;
+  };
+  Individual: Individual;
+  LegalEntity?: never;
+}
+
+interface PartyAsLegalEntity extends PartyBase {
+  TaxIdentification: {
+    PersonTypeCode: PersonTypeCode.LegalEntity;
+    ResidenceTypeCode: ResidenceTypeCode;
+    TaxIdentificationNumber: string;
+  };
+  LegalEntity: LegalEntity;
+  Individual?: never;
+}
+
+type Party = PartyAsIndividual | PartyAsLegalEntity;
 
 export enum PersonTypeCode {
   Individual = "F", // Persona física (autonomo).
