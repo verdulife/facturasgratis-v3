@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PersonTypeCode } from '@/types/facturae';
 	import { CP_LENGHT, NIF_LENGHT, PERSON_TYPE_CODES } from '@/lib/consts';
-	import { SellerDefault } from '@/lib/defaults';
+	import { PartyDefault } from '@/lib/defaults';
 
 	import Input from '@/components/ui/Input.svelte';
 	import Select from '@/components/ui/Select.svelte';
@@ -9,21 +9,13 @@
 	import Row from '@/components/ui/Row.svelte';
 	import Button from '@/components/Button.svelte';
 	import { SellersStore, currentSellerStore } from '@/lib/stores';
+	import { formatParty } from '@/lib/format';
 
-	const seller = $state(SellerDefault);
+	const seller = $state(PartyDefault);
 
 	function handleSubmit(ev: Event) {
 		ev.preventDefault();
-
-		function removeNull<T>(obj: T | any) {
-			Object.keys(obj).forEach((key) => {
-				if (obj[key] && typeof obj[key] === 'object') removeNull(obj[key]);
-				else if (obj[key] == null) delete obj[key];
-			});
-			return obj;
-		}
-
-		$SellersStore[$currentSellerStore] = removeNull(seller);
+		$SellersStore[$currentSellerStore] = formatParty(seller);
 	}
 </script>
 
@@ -52,12 +44,7 @@
 
 		{#if seller.TaxIdentification.PersonTypeCode === PersonTypeCode.Individual}
 			<Fieldset legend="Datos personales">
-				<Input
-					label="Nombre"
-					type="text"
-					placeholder="Ej. Juana"
-					bind:value={seller.Individual.Name}
-				/>
+				<Input label="Nombre" type="text" placeholder="Ej. Juana" bind:value={seller.Party.Name} />
 
 				<Row>
 					<Input
@@ -65,7 +52,7 @@
 						type="text"
 						placeholder="Ej. Garcia"
 						optional
-						bind:value={seller.Individual.FirstSurname}
+						bind:value={seller.Party.FirstSurname}
 						className="grow"
 					/>
 					<Input
@@ -73,7 +60,7 @@
 						type="text"
 						placeholder="Ej. Muñoz"
 						optional
-						bind:value={seller.Individual.SecondSurname}
+						bind:value={seller.Party.SecondSurname}
 						className="grow"
 					/>
 				</Row>
@@ -84,14 +71,14 @@
 					label="Razón social"
 					type="text"
 					placeholder="Ej. Empresa S.L."
-					bind:value={seller.LegalEntity.CorporateName}
+					bind:value={seller.Party.CorporateName}
 				/>
 				<Input
 					label="Nombre comercial"
 					type="text"
 					placeholder="Ej. Empresa"
 					optional
-					bind:value={seller.LegalEntity.TradeName}
+					bind:value={seller.Party.TradeName}
 				/>
 			</Fieldset>
 		{/if}
@@ -102,7 +89,7 @@
 					label="Dirección"
 					type="text"
 					placeholder="Ej. Calle Mayor, 16"
-					bind:value={seller.AddressInSpain.Address}
+					bind:value={seller.Party.AddressInSpain.Address}
 					className="grow"
 				/>
 				<Input
@@ -110,7 +97,7 @@
 					type="text"
 					placeholder="Ej. 08818"
 					size={CP_LENGHT}
-					bind:value={seller.AddressInSpain.PostCode}
+					bind:value={seller.Party.AddressInSpain.PostCode}
 				/>
 			</Row>
 
@@ -119,14 +106,14 @@
 					label="Ciudad"
 					type="text"
 					placeholder="Ej. Olivella"
-					bind:value={seller.AddressInSpain.Town}
+					bind:value={seller.Party.AddressInSpain.Town}
 					className="grow"
 				/>
 				<Input
 					label="Provincia"
 					type="text"
 					placeholder="Ej. Barcelona"
-					bind:value={seller.AddressInSpain.Province}
+					bind:value={seller.Party.AddressInSpain.Province}
 					className="grow"
 				/>
 			</Row>
@@ -138,14 +125,14 @@
 					label="Teléfono"
 					type="tel"
 					placeholder="Ej. 600 600 600"
-					bind:value={seller.ContactDetails.Telephone}
+					bind:value={seller.Party.ContactDetails.Telephone}
 					className="grow"
 				/>
 				<Input
 					label="Correo electrónico"
 					type="email"
 					placeholder="Ej. contabilidad@gmail.com"
-					bind:value={seller.ContactDetails.ElectronicMail}
+					bind:value={seller.Party.ContactDetails.ElectronicMail}
 					className="grow"
 				/>
 			</Row>
@@ -156,7 +143,7 @@
 					type="text"
 					placeholder="Ej. www.ejemplo.com"
 					optional
-					bind:value={seller.ContactDetails.WebAddress}
+					bind:value={seller.Party.ContactDetails.WebAddress}
 					className="grow"
 				/>
 				<Input
@@ -164,7 +151,7 @@
 					type="text"
 					placeholder="Ej. Juana"
 					optional
-					bind:value={seller.ContactDetails.ContactPersons}
+					bind:value={seller.Party.ContactDetails.ContactPersons}
 					className="grow"
 				/>
 			</Row>

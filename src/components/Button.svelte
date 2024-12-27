@@ -2,6 +2,10 @@
 	let { type = null, click = $bindable(), children } = $props();
 </script>
 
-<button class="bg-yellow-300 min-w-60 text-sm hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded" on:click={click}>
+<button
+	{type}
+	onclick={click}
+	class="min-w-60 rounded bg-yellow-300 px-6 py-3 text-sm font-bold text-black hover:bg-yellow-400"
+>
 	{@render children()}
 </button>
