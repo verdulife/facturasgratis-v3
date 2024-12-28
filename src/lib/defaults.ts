@@ -1,8 +1,10 @@
-import { IVA } from "@/types/enums";
-import { InvoiceClass, InvoiceDocumentType, Modality, PersonTypeCode, ResidenceTypeCode, TaxTypeCode } from "@/types/facturae";
+import { IRPF, IVA } from "@/types/enums";
+import { InvoiceClass, InvoiceDocumentType, Modality, PaymentMeans, PersonTypeCode, ResidenceTypeCode, TaxTypeCode } from "@/types/facturae";
 
 const serial = `FAC${new Date().getFullYear().toString().slice(2, 4)}-`;
 const lastNumeration = 1;
+const bathID = "12345678";
+const today = new Date().toISOString().split("T")[0];
 
 const TaxIndentificationDefault = {
   PersonTypeCode: PersonTypeCode.Individual,
@@ -38,17 +40,34 @@ export const PartyDefault = {
   },
 };
 
+export const itemDefault = {
+  SequenceNumber: "1",
+  ItemDescription: null,
+  Quantity: 1,
+  UnitOfMeasure: "Unidades",
+  UnitPriceWithoutTax: null,
+  TotalCost: null,
+  GrossAmount: null,
+  DiscountsAndRebates: [
+    {
+      DiscountReason: "Descuento general",
+      DiscountRate: null,
+      DiscountAmount: null,
+    },
+  ]
+}
+
 export const InvoiceDefault = {
   FileHeader: {
     SchemaVersion: "3.2.2",
     Modality: Modality.Individual,
     InvoiceIssuerType: null,
     Batch: {
-      BatchIdentifier: null,
+      BatchIdentifier: bathID,
       InvoicesCount: 1,
-      TotalInvoicesAmount: 0,
-      TotalOutstandingAmount: 0,
-      TotalExecutableAmount: 0,
+      TotalInvoicesAmount: null,
+      TotalOutstandingAmount: null,
+      TotalExecutableAmount: null,
       InvoiceCurrencyCode: "EUR",
     }
   },
@@ -63,68 +82,55 @@ export const InvoiceDefault = {
         InvoiceSeriesCode: serial,
         InvoiceDocumentType: InvoiceDocumentType.CompleteInvoice,
         InvoiceClass: InvoiceClass.Original,
-        Corrective: null,
       },
       InvoiceIssueData: {
-        IssueDate: "2023-01-01",
-        OperationDate: null,
-        PlaceOfIssue: null,
-        InvoicingPeriod: null,
+        IssueDate: today,
+        OperationDate: today,
+        PlaceOfIssue: {
+          PostCode: null,
+          PlafeOfIssueDescription: null,
+        },
         InvoiceCurrencyCode: "EUR",
-        TaxCurrencyCode: null,
-        ExchangeRateDetails: null,
-        LanguageName: null,
+        TaxCurrencyCode: "EUR",
+        LanguageName: "es",
       },
       TaxesOutputs: [
         {
           TaxTypeCode: TaxTypeCode.IVA,
           TaxRate: IVA.General,
-          TaxableBase: 1000,
-          TaxAmount: 212,
-          EquivalenceSurcharge: null,
-          EquivalenceSurchargeAmount: null,
+          TaxableBase: null,
+          TaxAmount: null,
+        },
+        {
+          TaxTypeCode: TaxTypeCode.IRPF,
+          TaxRate: IRPF.Fiveteen,
+          TaxableBase: null,
+          TaxAmount: null,
         }
       ],
       InvoiceTotals: {
-        TotalGrossAmount: 1000,
+        TotalGrossAmount: null,
         TotalGeneralDiscounts: null,
-        TotalGeneralSurcharges: null,
-        TotalGrossAmountBeforeTaxes: 1000,
-        TotalTaxOutputs: 212,
+        TotalGrossAmountBeforeTaxes: null,
+        TotalTaxOutputs: null,
         TotalTaxesWithheld: null,
-        InvoiceTotal: 1212,
-        TotalOutstandingAmount: 0,
-        TotalExecutableAmount: 0,
-        Subsidies: null,
-        PaymentsInKind: null,
+        InvoiceTotal: null,
+        TotalOutstandingAmount: null,
+        TotalExecutableAmount: null
       },
       Items: [
-        {
-          SequenceNumber: "1",
-          ItemDescription: "Producto 1",
-          Quantity: 1,
-          UnitOfMeasure: null,
-          UnitPriceWithoutTax: 1000,
-          TotalCost: 1000,
-          GrossAmount: 1000,
-          DiscountsAndRebates: null,
-          Charges: null,
-          TaxesOutputs: null,
-          AdditionalLineItemInformation: null,
-          SpecialTaxableEvent: null,
-          ArticleCode: null,
-        }
+        itemDefault,
+        itemDefault,
       ],
       PaymentDetails: [
         {
-          InstallmentDueDate: "2023-01-01",
-          InstallmentAmount: 1000,
-          PaymentMeans: null,
+          InstallmentDueDate: today,
+          InstallmentAmount: null,
+          PaymentMeans: PaymentMeans.CreditTransfer,
           AccountToBeCredited: {
             IBAN: null,
             BankCode: null,
             BranchCode: null,
-            OverseasBranchAddress: null,
           }
         }
       ]

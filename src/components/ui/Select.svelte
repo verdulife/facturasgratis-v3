@@ -15,7 +15,7 @@
 		class="text-md w-full appearance-none rounded border border-neutral-950 bg-neutral-900 px-4 py-3 outline-none group-focus-within:border-yellow-300"
 	>
 		{#if placeholder}
-			<option {value} disabled selected>{placeholder}</option>
+			<option {value} disabled>{placeholder}</option>
 		{/if}
 		{#each options as { value, label }}
 			<option {value}>{label}</option>

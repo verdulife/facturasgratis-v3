@@ -1,14 +1,14 @@
 export enum IVA {
-  General = 21,
-  Reduced = 10,
-  SuperReduced = 4,
+  General = "21",
+  Reduced = "10",
+  SuperReduced = "4",
   Exempt = 0,
 }
 
 export enum IRPF {
-  Seven = 7,
-  Fiveteen = 15,
-  Nineteen = 19
+  Seven = "7",
+  Fiveteen = "15",
+  Nineteen = "19"
 }
 
 export enum IPSI {
